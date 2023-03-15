@@ -88,14 +88,14 @@ class Minesweeper(private val difficultyLevel: DifficultyLevel) {
         }
     }
 
-//    fun flagCell(row: Int, col: Int) {
-//        if (!isGameOver) {
-//            val cell = board[row][col]
-//            if (cell.isCovered) {
-//                cell.flag()
-//            }
-//        }
-//    }
+    fun flagCell(row: Int, col: Int) {
+        if (!isGameOver) {
+            val cell = board[row][col]
+            if (cell.isCovered) {
+                cell.flag()
+            }
+        }
+    }
 
     fun isWin(): Boolean {
         var numFlaggedCells = 0
@@ -206,7 +206,8 @@ fun main() {
                     println("Invalid input. Please enter valid row and column (e.g. '3 4'):")
                     continue
                 }
-                game.board[row][col].flag()
+
+                game.flagCell(row, col)
                 printBoard(game.board)
                 if (game.isWin()) {
                     println("Congratulations! You won!")
