@@ -88,33 +88,31 @@ class Minesweeper(private val difficultyLevel: DifficultyLevel) {
         }
     }
 
-    fun flagCell(row: Int, col: Int) {
-        if (!isGameOver) {
-            val cell = board[row][col]
-            if (cell.isCovered) {
-                cell.flag()
-            }
-        }
-    }
+//    fun flagCell(row: Int, col: Int) {
+//        if (!isGameOver) {
+//            val cell = board[row][col]
+//            if (cell.isCovered) {
+//                cell.flag()
+//            }
+//        }
+//    }
 
     fun isWin(): Boolean {
-        var allBombsFlagged = true
-        var allNonBombsUncovered = true
-        for (row in 0 until gridSize) {
-            for (col in 0 until gridSize) {
-                val cell = board[row][col]
-                if (cell.isBomb) {
-                    if (!cell.isFlagged) {
-                        allBombsFlagged = false
-                    }
-                } else {
-                    if (cell.isCovered) {
-                        allNonBombsUncovered = false
-                    }
-                }
+        var numFlaggedCells = 0
+        var numUncoveredNonBombCells = 0
+        val numNonBombCells = gridSize * gridSize - difficultyLevel.numBombs
+
+        for (i in 0 until gridSize * gridSize) {
+            val cell = board[i / gridSize][i % gridSize]
+            if (cell.isFlagged) {
+                numFlaggedCells++
+            }
+            if (!cell.isBomb && !cell.isCovered) {
+                numUncoveredNonBombCells++
             }
         }
-        return allBombsFlagged || allNonBombsUncovered
+
+        return numFlaggedCells == difficultyLevel.numBombs && numUncoveredNonBombCells == numNonBombCells
     }
 
     fun isLose(): Boolean {
@@ -225,7 +223,6 @@ fun main() {
         }
     }
 }
-
 
 fun printBoard(board: Array<Array<Cell>>, revealBombs: Boolean = false) {
     val sb = StringBuilder()
